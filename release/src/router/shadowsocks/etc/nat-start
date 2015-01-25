@@ -1,0 +1,66 @@
+#!/bin/sh
+
+SS_ENABLE=`nvram get ss_enable`
+SS_SERVER=`nvram get ss_server`
+SS_SERVER_PORT=`nvram get ss_server_port`
+SS_PASSWORD=`nvram get ss_password`
+SS_METHOD=`nvram get ss_method`
+
+if [ ! -d /var/geoip ]; then
+	mkdir -p /var/geoip
+	rm -f /var/geoip/geoipdb.bin
+	rm -f /var/geoip/geoipdb.idx
+	ln -s /rom/etc/geoip/geoipdb.bin /var/geoip/geoipdb.bin
+	ln -s /rom/etc/geoip/geoipdb.idx /var/geoip/geoipdb.idx
+	modprobe xt_geoip
+fi
+
+if [ "$SS_ENABLE" == "1" ]; then
+	echo "enable"
+else
+	echo "disabled"
+	rm -f /jffs/configs/dnsmasq.conf.add
+	return 0
+fi
+
+cat >/tmp/config.json <<EOL 
+{
+	"server":"$SS_SERVER",
+	"server_port":$SS_SERVER_PORT,
+	"local_port":1080,
+	"password":"$SS_PASSWORD",
+	"timeout":600,
+	"method":"$SS_METHOD"
+}
+EOL
+
+if [ -f /var/run/shadowsocks.pid ]; then
+	SS=$(cat /var/run/shadowsocks.pid)
+	kill $SS || true
+fi
+if [ -f /var/run/sstunnel.pid ]; then
+	SS=$(cat /var/run/sstunnel.pid)
+	kill $SS || true
+fi
+
+ss-tunnel -c /tmp/config.json -l 5151 -L 8.8.8.8:53 -u -f /var/run/sstunnel.pid || true
+ss-redir -c /tmp/config.json -f /var/run/shadowsocks.pid || true
+
+iptables -t nat -F SHADOWSOCKS
+iptables -t nat -N SHADOWSOCKS
+iptables -t nat -A SHADOWSOCKS -d $SS_SERVER -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 114.114.114.114 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 8.8.8.8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 0.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 10.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 127.0.0.0/8 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 169.254.0.0/16 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 172.16.0.0/12 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 192.168.0.0/16 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 224.0.0.0/4 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d 240.0.0.0/4 -j RETURN
+iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports 1080
+iptables -A PREROUTING -t nat -m geoip -p tcp ! --destination-country CN -j SHADOWSOCKS
+
+chinadns -p 7913 -s 114.114.114.114,127.0.0.1:5151 -l /rom/etc/iplist.txt -c /rom/etc/chnroute.txt
+

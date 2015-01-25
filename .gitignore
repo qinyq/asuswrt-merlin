@@ -1,3 +1,6 @@
 release/src/router/pptpd/Makefile
 release/src/router/pptpd/config.log
 release/src/router/pptpd/config.status
+release/src/router/GeoIP-1.6.2/*.o
+release/src/router/GeoIP-1.6.2/*.lo
+release/src/router/GeoIP-1.6.2/libGeoIP/.libs*

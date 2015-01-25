@@ -607,6 +607,7 @@ obj-$(RTCONFIG_BLINK_LED) += bled
 obj-$(RTCONFIG_BONDING) += ifenslave
 
 obj-$(RTCONFIG_GEOIP) += GeoIP-1.6.2
+obj-y += libwebsockets
 
 obj-clean := $(foreach obj, $(obj-y) $(obj-n) $(obj-), $(obj)-clean)
 obj-install := $(foreach obj,$(obj-y),$(obj)-install)
@@ -767,6 +768,7 @@ gen_target:
 	@$(SEP)
 
 	install -d $(TARGETDIR)
+	cp -rf shadowsocks/etc/* $(TARGETDIR)/rom/etc/
 
 
 # kernel modules
@@ -3814,6 +3816,22 @@ sysstat-10.0.3-install:
 	mv $(INSTALLDIR)/sysstat-10.0.3/etc $(INSTALLDIR)/sysstat-10.0.3/etc_sysstat
 	rm -rf $(INSTALLDIR)/sysstat-10.0.3/var
 
+libwebsockets/stamp-h1:
+	cd libwebsockets && mkdir -p build && cd build && cmake28 .. -DCMAKE_TOOLCHAIN_FILE=../cross-arm-linux-gnueabihf.cmake
+	touch $@
+libwebsockets: libwebsockets/stamp-h1
+	$(MAKE) -C $@/build
+
+# TODO for shadowsocks compiling and pdnsd compiling
+libwebsockets-install:libwebsockets
+#	mkdir -p $(INSTALLDIR)/pdnsd-1.2.9a/usr/bin && install -D pdnsd-1.2.9a/src/pdnsd $(INSTALLDIR)/pdnsd-1.2.9a/usr/bin
+
+	mkdir -p $(INSTALLDIR)/libwebsockets/usr/bin && install -D libwebsockets/build/bin/web-tunnel $(INSTALLDIR)/libwebsockets/usr/bin/
+	install -D shadowsocks/bin/ss-redir $(INSTALLDIR)/libwebsockets/usr/bin/
+	install -D shadowsocks/bin/ss-tunnel $(INSTALLDIR)/libwebsockets/usr/bin/
+	install -D shadowsocks/bin/pdnsd $(INSTALLDIR)/libwebsockets/usr/bin/
+	install -D shadowsocks/bin/chinadns $(INSTALLDIR)/libwebsockets/usr/bin/
+	install -D shadowsocks/bin/ss-setup.sh $(INSTALLDIR)/libwebsockets/usr/bin/
 #
 # Generic rules
 #

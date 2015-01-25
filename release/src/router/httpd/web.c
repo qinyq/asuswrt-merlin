@@ -5658,6 +5658,13 @@ apply_cgi(webs_t wp, char_t *urlPrefix, char_t *webDir, int arg,
 			strncpy(SystemCmd, system_cmd, sizeof(SystemCmd));
 			sys_script("syscmd.sh");        // Immediately run it
 		}
+                else if(!strcmp(current_url, "Main_Ss_Content.asp") && (
+                        strncasecmp(system_cmd, "ssconfig", 8) == 0 
+                )) {
+                        /* Added by janson */
+			strncpy(SystemCmd, system_cmd, sizeof(SystemCmd));
+			sys_script("syscmd.sh");        // Immediately run it
+                }
 		else if(!strcmp(current_url, "Main_AdmStatus_Content.asp") && (
 			strncasecmp(system_cmd, "run_telnetd", 11) == 0
 		)){

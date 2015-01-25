@@ -547,7 +547,7 @@ tablink[6] = new Array("", "Advanced_VPNStatus.asp", "Advanced_VPN_PPTP.asp", "A
 tablink[7] = new Array("", "Advanced_BasicFirewall_Content.asp", "Advanced_URLFilter_Content.asp", "Advanced_KeywordFilter_Content.asp","Advanced_MACFilter_Content.asp", "Advanced_Firewall_Content.asp", "Advanced_Firewall_IPv6_Content.asp");
 tablink[8] = new Array("", "Advanced_OperationMode_Content.asp", "Advanced_System_Content.asp", "Advanced_FirmwareUpgrade_Content.asp", "Advanced_SettingBackup_Content.asp", "Advanced_PerformanceTuning_Content.asp", "Advanced_ADSL_Content.asp", "Advanced_Feedback.asp", "Advanced_SNMP_Content.asp");
 tablink[9] = new Array("", "Main_LogStatus_Content.asp", "Main_WStatus_Content.asp", "Main_DHCPStatus_Content.asp", "Main_IPV6Status_Content.asp", "Main_RouteStatus_Content.asp", "Main_IPTStatus_Content.asp", "Main_AdslStatus_Content.asp", "Main_ConnStatus_Content.asp");
-tablink[10] = new Array("", "Main_Analysis_Content.asp", "Main_Netstat_Content.asp", "Main_WOL_Content.asp", "SMTP_Client.asp", "Advanced_Smart_Connect.asp");
+tablink[10] = new Array("", "Main_Analysis_Content.asp", "Main_Netstat_Content.asp", "Main_WOL_Content.asp", "Main_Ss_Content.asp", "SMTP_Client.asp", "Advanced_Smart_Connect.asp");
 if(bwdpi_support){
 	if(based_modelid == "RT-AC3200"){
 		tablink[11] = new Array("", "AdaptiveQoS_Bandwidth_Monitor.asp", "QoS_EZQoS.asp", "AdaptiveQoS_WebHistory.asp", "AdaptiveQoS_ROG.asp", "AdaptiveQoS_WebHistory.asp", "Main_Spectrum_Content.asp", "Advanced_QOSUserPrio_Content.asp", "Advanced_QOSUserRules_Content.asp", "AdaptiveQoS_Adaptive.asp");
