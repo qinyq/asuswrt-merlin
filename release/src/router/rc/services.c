@@ -4761,6 +4761,9 @@ check_ddr_done:
 		(get_model() == MODEL_RTAC3200) ||
 		(get_model() == MODEL_RPAC68U) ||
 		(get_model() == MODEL_RTAC68U) ||
+		(get_model() == MODEL_EA6900) ||
+		(get_model() == MODEL_R7000) ||
+		(get_model() == MODEL_WS880) ||
 		(get_model() == MODEL_DSLAC68U) ||
 		(get_model() == MODEL_RTAC87U) ||
 		(get_model() == MODEL_RTN12HP) ||
@@ -6699,7 +6702,7 @@ void setup_leds()
 	model = get_model();
 
 	if (nvram_get_int("led_disable") == 1) {
-		if ((model == MODEL_RTAC56U) || (model == MODEL_RTAC56S) || (model == MODEL_RTAC68U) || (model == MODEL_RTAC87U) || (model == MODEL_RTAC3200)) {
+		if ((model == MODEL_RTAC56U) || (model == MODEL_RTAC56S) || (model == MODEL_RTAC68U) || (model == MODEL_EA6900) || (model == MODEL_R7000) || (model == MODEL_WS880) || (model == MODEL_RTAC87U) || (model == MODEL_RTAC3200)) {
 			setAllLedOff();
 			if (model == MODEL_RTAC87U)
 				led_control_atomic(LED_5G, LED_OFF);
@@ -6726,10 +6729,27 @@ void setup_leds()
 
 		if (nvram_match("wl1_radio", "1")) {
 			led_control_atomic(LED_5G_FORCED, LED_ON);
+#if defined(WS880) || defined(R7000)
+			led_control_atomic(LED_5G, LED_ON);
+#endif
 		}
 		if (nvram_match("wl0_radio", "1")) {
 			led_control_atomic(LED_2G, LED_ON);
 		}
+#ifdef RTCONFIG_TURBO
+		if ((nvram_match("wl0_radio", "1") || nvram_match("wl1_radio", "1")
+#ifdef RTAC3200
+			|| nvram_match("wl2_radio", "1")
+#endif
+		)
+#ifdef RTCONFIG_LED_BTN
+			&& !nvram_get_int("led_disable")
+#endif
+		)
+			led_control(LED_TURBO, LED_ON);
+		else
+			led_control(LED_TURBO, LED_OFF);
+#endif
 #ifdef RTCONFIG_QTN
 		setAllLedOn_qtn();
 #endif
