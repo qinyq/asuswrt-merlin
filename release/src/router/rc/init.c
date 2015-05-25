@@ -3802,6 +3802,7 @@ int init_nvram(void)
 			exit(0);
 		}
 
+		nvram_unset("et1macaddr");
 		nvram_set("bl_version", "1.0.2.1");
 
 		if (!nvram_get("secret_code"))
