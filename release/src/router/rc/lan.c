@@ -758,7 +758,7 @@ void wlconf_pre()
 #ifdef RTCONFIG_BCMARM
 		if (nvram_match(strcat_r(prefix, "nband", tmp), "2"))
 		{
-			if (model == MODEL_RTN18U || model == MODEL_RTAC3200 || model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R7000 || model == MODEL_WS880 || model == MODEL_RPAC68U || model == MODEL_DSLAC68U || model == MODEL_RTAC88U || model == MODEL_RTAC87U) {
+			if (model == MODEL_RTN18U || model == MODEL_RTAC3200 || model == MODEL_RTAC68U || model == MODEL_EA6900 || model == MODEL_R6300V2 || model == MODEL_R7000 || model == MODEL_WS880 || model == MODEL_RPAC68U || model == MODEL_DSLAC68U || model == MODEL_RTAC88U || model == MODEL_RTAC87U) {
 				if (nvram_match(strcat_r(prefix, "turbo_qam", tmp), "1"))
 					eval("wl", "-i", word, "vht_features", "3");
 				else
@@ -952,7 +952,7 @@ void start_wl(void)
 		nvram_set("led_5g", "0");
 		led_control(LED_5G, LED_OFF);
 	}
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(WS880) || defined(R6300V2)
 	if (nvram_match("wl0_radio", "1"))
 	{
 #ifdef RTCONFIG_LED_BTN
@@ -1604,6 +1604,7 @@ void start_lan(void)
 		(get_model() == MODEL_RPAC68U) ||
 		(get_model() == MODEL_RTAC68U) ||
 		(get_model() == MODEL_EA6900) ||
+		(get_model() == MODEL_R6300V2) ||
 		(get_model() == MODEL_R7000) ||
 		(get_model() == MODEL_WS880) ||
 		(get_model() == MODEL_DSLAC68U) ||
@@ -1650,6 +1651,7 @@ void start_lan(void)
 		(get_model() == MODEL_RPAC68U) ||
 		(get_model() == MODEL_RTAC68U) ||
 		(get_model() == MODEL_EA6900) ||
+		(get_model() == MODEL_R6300V2) ||
 		(get_model() == MODEL_R7000) ||
 		(get_model() == MODEL_WS880) ||
 		(get_model() == MODEL_DSLAC68U) ||
@@ -2286,7 +2288,7 @@ void stop_lan(void)
 #if defined(RTAC66U) || defined(BCM4352)
 	nvram_set("led_5g", "0");
 	led_control(LED_5G, LED_OFF);
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(WS880) || defined(R6300V2)
 	led_control(LED_2G, LED_OFF);
 #endif
 #ifdef RTCONFIG_TURBO
@@ -3099,6 +3101,7 @@ static void led_bh_prep(int post)
 			}
 			break;
 		case MODEL_EA6900:
+		case MODEL_R6300V2:
 		case MODEL_R7000:
 		case MODEL_WS880:
 			if(!post)
@@ -3515,7 +3518,7 @@ void stop_lan_wl(void)
 #if defined(RTAC66U) || defined(BCM4352)
 	nvram_set("led_5g", "0");
 	led_control(LED_5G, LED_OFF);
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(WS880) || defined(R6300V2)
 	led_control(LED_2G, LED_OFF);
 #endif
 #ifdef RTCONFIG_TURBO
@@ -3568,6 +3571,7 @@ void start_lan_wl(void)
 		(get_model() == MODEL_RPAC68U) ||
 		(get_model() == MODEL_RTAC68U) ||
 		(get_model() == MODEL_EA6900) ||
+		(get_model() == MODEL_R6300V2) ||
 		(get_model() == MODEL_R7000) ||
 		(get_model() == MODEL_WS880) ||
 		(get_model() == MODEL_DSLAC68U) ||
@@ -3607,6 +3611,7 @@ void start_lan_wl(void)
 		(get_model() == MODEL_RPAC68U) ||
 		(get_model() == MODEL_RTAC68U) ||
 		(get_model() == MODEL_EA6900) ||
+		(get_model() == MODEL_R6300V2) ||
 		(get_model() == MODEL_R7000) ||
 		(get_model() == MODEL_WS880) ||
 		(get_model() == MODEL_DSLAC68U) ||
@@ -3916,7 +3921,7 @@ void restart_wl(void)
 		nvram_set("led_5g", "0");
 		led_control(LED_5G, LED_OFF);
 	}
-#if defined(R7000) || defined(WS880)
+#if defined(R7000) || defined(WS880) || defined(R6300V2)
 	if (nvram_match("wl0_radio", "1"))
 	{
 #ifdef RTCONFIG_LED_BTN

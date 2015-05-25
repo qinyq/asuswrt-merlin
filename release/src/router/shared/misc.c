@@ -1040,6 +1040,7 @@ void bcmvlan_models(int model, char *vlan)
 	case MODEL_RTAC88U:
 	case MODEL_EA6900:
 	case MODEL_EA9200:
+	case MODEL_R6300V2:
 	case MODEL_R7000:
 	case MODEL_R8000:
 	case MODEL_WS880:
